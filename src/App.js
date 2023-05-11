@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState} from 'react';
 
 function App() {
   const [pokemonname, setpokemonName] = useState('')
@@ -17,12 +17,9 @@ function App() {
 
   const inputHandler = (e) =>{          
     setpokemonName(e.target.value.toLowerCase())
-    
   }
 
-
   const searchPokemon= async() =>{
-
       try {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonname}`)
         const data = await response.json()
@@ -40,29 +37,36 @@ function App() {
               attack:stats[1].base_stat,
               defense:stats[2].base_stat,
               element:types[0].type.name 
-            })
+            }) 
       }catch (error){
-        console.error('an error occured', error)
+        alert('no pokemin found found of this name', error)
+        console.error('not found', error)
       } 
-
+       
       console.log(pokemonfact)
+    
+  }
+  const handleSubmit = (e) =>{
+    e.preventDefault()
   }
 
+  
+   
   return (
     <div className="App">
-      <div className="pokemon-app">
+      <form className="pokemon-app" onSubmit={handleSubmit}>
           <input 
           type='text'
           value={pokemonname}
           onChange={inputHandler}/>
           <button onClick={searchPokemon} disabled={!pokemonname}>Search Pokemon</button>
-      </div>
+      </form>
 
       {pokemonname === ""?  (
       <h2>Please enter a Pokemon name</h2>
       ):(
       <div className="listing-facts">
-        {pokemonfact.name !== ""?(
+        {pokemonfact.name === pokemonname?(
           <div className="facts-div">
          <div className='upper-div'>   
           <h2>{pokemonfact.name}</h2>
